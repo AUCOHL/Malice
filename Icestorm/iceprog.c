@@ -54,7 +54,7 @@ void check_rx()
 void error()
 {
     check_rx();
-    fprintf(stderr, "ABORT.\n");
+    fprintf(stderr, "Error.\n");
     if (ftdic_open) {
         if (ftdic_latency_set)
             ftdi_set_latency_timer(&ftdic, ftdi_latency);
@@ -366,14 +366,7 @@ const char* iceprog_program(bool prog_sram, const char *filename)
 {
     int read_size = 256 * 1024;
     int rw_offset = 0;
-
-    bool read_mode = false;
-    bool check_mode = false;
-    bool bulk_erase = false;
-    bool dont_erase = false;
-    bool test_mode = false;
-    const char *devstr = NULL;
-    enum ftdi_interface ifnum = INTERFACE_A;
+    enum ftdi_interface ifnum = INTERFACE_A;    
 
     fprintf(stderr, "Initialized..\n");
 
@@ -428,7 +421,7 @@ const char* iceprog_program(bool prog_sram, const char *filename)
     fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
 
     set_gpio(1, 1);
-    usleep(100000);
+    usleep(200000);
 
 
     if (prog_sram)
@@ -457,7 +450,345 @@ const char* iceprog_program(bool prog_sram, const char *filename)
         if (f == NULL) {
             fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
             error();
+        }
+
+        fprintf(stderr, "programming..\n");
+        while (1)
+        {
+            static unsigned char buffer[4096];
+            int rc = fread(buffer, 1, 4096, f);
+            if (rc <= 0) break;
+            if (verbose)
+                fprintf(stderr, "sending %d bytes.\n", rc);
+            send_spi(buffer, rc);
+        }
+
+        if (f != stdin)
+            fclose(f);
+
+        // add 48 dummy bits
+        send_byte(0x8f);
+        send_byte(0x05);
+        send_byte(0x00);
+
+        // add 1 more dummy bit
+        send_byte(0x8e);
+        send_byte(0x00);
+
+        fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
+    }
+    else
+    {
+        // ---------------------------------------------------------
+        // Reset
+        // ---------------------------------------------------------
+
+        fprintf(stderr, "reset..\n");
+
+        set_gpio(1, 0);
+        usleep(250000);
+
+        fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
+
+        flash_power_up();
+
+        flash_read_id();
+
+
+        // ---------------------------------------------------------
+        // Program
+        // ---------------------------------------------------------
+
+        FILE *f = (strcmp(filename, "-") == 0) ? stdin :
+            fopen(filename, "rb");
+        if (f == NULL) {
+            fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
+            error();
             return "Failed to open file.";
+        }
+            
+        struct stat st_buf;
+        if (stat(filename, &st_buf)) {
+            fprintf(stderr, "Error: Can't stat '%s': %s\n", filename, strerror(errno));
+            error();
+            return "Failed to stat file.";
+        }
+
+        fprintf(stderr, "file size: %d\n", (int)st_buf.st_size);
+
+        int begin_addr = rw_offset & ~0xffff;
+        int end_addr = (rw_offset + (int)st_buf.st_size + 0xffff) & ~0xffff;
+
+        for (int addr = begin_addr; addr < end_addr; addr += 0x10000) {
+            flash_write_enable();
+            flash_64kB_sector_erase(addr);
+            flash_wait();
+        }
+
+        fprintf(stderr, "programming..\n");
+
+        for (int rc, addr = 0; true; addr += rc) {
+            uint8_t buffer[256];
+            int page_size = 256 - (rw_offset + addr) % 256;
+            rc = fread(buffer, 1, page_size, f);
+            if (rc <= 0) break;
+            flash_write_enable();
+            flash_prog(rw_offset + addr, buffer, rc);
+            flash_wait();
+        }
+
+        if (f != stdin)
+            fclose(f);
+
+
+        // ---------------------------------------------------------
+        // Verify
+        // ---------------------------------------------------------
+        f = (strcmp(filename, "-") == 0) ? stdin :
+            fopen(filename, "rb");
+        if (f == NULL) {
+            fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
+            error();
+            return "Failed to open file during verification.";
+        }
+
+        fprintf(stderr, "reading..\n");
+        for (int addr = 0; true; addr += 256) {
+            uint8_t buffer_flash[256], buffer_file[256];
+            int rc = fread(buffer_file, 1, 256, f);
+            if (rc <= 0) break;
+            flash_read(rw_offset + addr, buffer_flash, rc);
+            if (memcmp(buffer_file, buffer_flash, rc)) {
+                fprintf(stderr, "Found difference between flash and file!\n");
+                error();
+                return "Flash/File inconsistency.";
+            }
+        }
+
+        fprintf(stderr, "Verified.\n");
+
+        if (f != stdin)
+            fclose(f);
+
+        // ---------------------------------------------------------
+        // Reset
+        // ---------------------------------------------------------
+
+        flash_power_down();
+
+        set_gpio(1, 1);
+        usleep(250000);
+
+        fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
+    }
+    
+
+
+    // ---------------------------------------------------------
+    // Exit
+    // ---------------------------------------------------------
+    fprintf(stderr, "Finished.\n");
+    ftdi_set_latency_timer(&ftdic, ftdi_latency);
+    ftdi_disable_bitbang(&ftdic);
+    ftdi_usb_close(&ftdic);
+    ftdi_deinit(&ftdic);
+    return NULL;
+}
+
+int iceprog_main(int argc, char *argv[])
+{
+    int read_size = 256 * 1024;
+    int rw_offset = 0;
+
+    bool read_mode = false;
+    bool check_mode = false;
+    bool bulk_erase = false;
+    bool dont_erase = false;
+    bool prog_sram = false;
+    bool test_mode = false;
+    const char *filename = NULL;
+    const char *devstr = NULL;
+    enum ftdi_interface ifnum = INTERFACE_A;
+
+    int opt;
+    char *endptr;
+    while ((opt = getopt(argc, argv, "d:I:rR:o:cbnStv")) != -1)
+    {
+        switch (opt)
+        {
+        case 'd':
+            devstr = optarg;
+            break;
+        case 'I':
+            if (!strcmp(optarg, "A")) ifnum = INTERFACE_A;
+            else if (!strcmp(optarg, "B")) ifnum = INTERFACE_B;
+            else if (!strcmp(optarg, "C")) ifnum = INTERFACE_C;
+            else if (!strcmp(optarg, "D")) ifnum = INTERFACE_D;
+            else help(argv[0]);
+            break;
+        case 'r':
+            read_mode = true;
+            break;
+        case 'R':
+            read_mode = true;
+            read_size = strtol(optarg, &endptr, 0);
+            if (!strcmp(endptr, "k")) read_size *= 1024;
+            if (!strcmp(endptr, "M")) read_size *= 1024 * 1024;
+            break;
+        case 'o':
+            rw_offset = strtol(optarg, &endptr, 0);
+            if (!strcmp(endptr, "k")) rw_offset *= 1024;
+            if (!strcmp(endptr, "M")) rw_offset *= 1024 * 1024;
+            break;
+        case 'c':
+            check_mode = true;
+            break;
+        case 'b':
+            bulk_erase = true;
+            break;
+        case 'n':
+            dont_erase = true;
+            break;
+        case 'S':
+            prog_sram = true;
+            break;
+        case 't':
+            test_mode = true;
+            break;
+        case 'v':
+            verbose = true;
+            break;
+        default:
+            help(argv[0]);
+        }
+    }
+
+    if (read_mode + check_mode + prog_sram + test_mode > 1)
+        help(argv[0]);
+
+    if (bulk_erase && dont_erase)
+        help(argv[0]);
+
+    if (optind+1 != argc && !test_mode) {
+        if (bulk_erase && optind == argc)
+            filename = "/dev/null";
+        else
+            help(argv[0]);
+    } else
+        filename = argv[optind];
+
+    // ---------------------------------------------------------
+    // Initialize USB connection to FT2232H
+    // ---------------------------------------------------------
+
+    fprintf(stderr, "init..\n");
+
+    ftdi_init(&ftdic);
+    ftdi_set_interface(&ftdic, ifnum);
+
+    if (devstr != NULL) {
+        if (ftdi_usb_open_string(&ftdic, devstr)) {
+            fprintf(stderr, "Can't find iCE FTDI USB device (device string %s).\n", devstr);
+            error();
+        }
+    } else {
+        if (ftdi_usb_open(&ftdic, 0x0403, 0x6010)) {
+            fprintf(stderr, "Can't find iCE FTDI USB device (vendor_id 0x0403, device_id 0x6010).\n");
+            error();
+            return -1;
+        }
+    }
+
+    ftdic_open = true;
+
+    if (ftdi_usb_reset(&ftdic)) {
+        fprintf(stderr, "Failed to reset iCE FTDI USB device.\n");
+        error();
+    }
+
+    if (ftdi_usb_purge_buffers(&ftdic)) {
+        fprintf(stderr, "Failed to purge buffers on iCE FTDI USB device.\n");
+        error();
+    }
+
+    if (ftdi_get_latency_timer(&ftdic, &ftdi_latency) < 0) {
+        fprintf(stderr, "Failed to get latency timer (%s).\n", ftdi_get_error_string(&ftdic));
+        error();
+    }
+
+    /* 1 is the fastest polling, it means 1 kHz polling */
+    if (ftdi_set_latency_timer(&ftdic, 1) < 0) {
+        fprintf(stderr, "Failed to set latency timer (%s).\n", ftdi_get_error_string(&ftdic));
+        error();
+    }
+
+    ftdic_latency_set = true;
+
+    if (ftdi_set_bitmode(&ftdic, 0xff, BITMODE_MPSSE) < 0) {
+        fprintf(stderr, "Failed set BITMODE_MPSSE on iCE FTDI USB device.\n");
+        error();
+    }
+
+    // enable clock divide by 5
+    send_byte(0x8b);
+
+    // set 6 MHz clock
+    send_byte(0x86);
+    send_byte(0x00);
+    send_byte(0x00);
+
+    fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
+
+    set_gpio(1, 1);
+    usleep(100000);
+
+
+    if (test_mode)
+    {
+        fprintf(stderr, "reset..\n");
+
+        set_gpio(1, 0);
+        usleep(250000);
+
+        fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
+
+        flash_power_up();
+
+        flash_read_id();
+
+        flash_power_down();
+
+        set_gpio(1, 1);
+        usleep(250000);
+
+        fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
+    }
+    else if (prog_sram)
+    {
+        // ---------------------------------------------------------
+        // Reset
+        // ---------------------------------------------------------
+
+        fprintf(stderr, "reset..\n");
+
+        set_gpio(0, 0);
+        usleep(100);
+
+        set_gpio(0, 1);
+        usleep(2000);
+
+        fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
+
+
+        // ---------------------------------------------------------
+        // Program
+        // ---------------------------------------------------------
+
+        FILE *f = (strcmp(filename, "-") == 0) ? stdin :
+            fopen(filename, "rb");
+        if (f == NULL) {
+            fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
+            error();
         }
 
         fprintf(stderr, "programming..\n");
@@ -514,7 +845,6 @@ const char* iceprog_program(bool prog_sram, const char *filename)
             if (f == NULL) {
                 fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
                 error();
-                return "Failed to open file.";
             }
 
             if (!dont_erase)
@@ -531,7 +861,6 @@ const char* iceprog_program(bool prog_sram, const char *filename)
                     if (stat(filename, &st_buf)) {
                         fprintf(stderr, "Error: Can't stat '%s': %s\n", filename, strerror(errno));
                         error();
-                        return "Failed to stat file.";
                     }
 
                     fprintf(stderr, "file size: %d\n", (int)st_buf.st_size);
@@ -565,431 +894,78 @@ const char* iceprog_program(bool prog_sram, const char *filename)
 
 
         // ---------------------------------------------------------
-        // Verify
+        // Read/Verify
         // ---------------------------------------------------------
-        FILE *f = (strcmp(filename, "-") == 0) ? stdin :
-            fopen(filename, "rb");
-        if (f == NULL) {
-            fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
-            error();
-            return "Failed to open file during verification.";
-        }
 
-        fprintf(stderr, "reading..\n");
-        for (int addr = 0; true; addr += 256) {
-            uint8_t buffer_flash[256], buffer_file[256];
-            int rc = fread(buffer_file, 1, 256, f);
-            if (rc <= 0) break;
-            flash_read(rw_offset + addr, buffer_flash, rc);
-            if (memcmp(buffer_file, buffer_flash, rc)) {
-                fprintf(stderr, "Found difference between flash and file!\n");
+        if (read_mode)
+        {
+            FILE *f = (strcmp(filename, "-") == 0) ? stdout :
+                fopen(filename, "wb");
+            if (f == NULL) {
+                fprintf(stderr, "Error: Can't open '%s' for writing: %s\n", filename, strerror(errno));
                 error();
-                return "Flash/File inconsistency.";
             }
+
+            fprintf(stderr, "reading..\n");
+            for (int addr = 0; addr < read_size; addr += 256) {
+                uint8_t buffer[256];
+                flash_read(rw_offset + addr, buffer, 256);
+                fwrite(buffer, 256, 1, f);
+            }
+
+            if (f != stdout)
+                fclose(f);
+        }
+        else
+        {
+            FILE *f = (strcmp(filename, "-") == 0) ? stdin :
+                fopen(filename, "rb");
+            if (f == NULL) {
+                fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
+                error();
+            }
+
+            fprintf(stderr, "reading..\n");
+            for (int addr = 0; true; addr += 256) {
+                uint8_t buffer_flash[256], buffer_file[256];
+                int rc = fread(buffer_file, 1, 256, f);
+                if (rc <= 0) break;
+                flash_read(rw_offset + addr, buffer_flash, rc);
+                if (memcmp(buffer_file, buffer_flash, rc)) {
+                    fprintf(stderr, "Found difference between flash and file!\n");
+                    error();
+                }
+            }
+
+            fprintf(stderr, "Verification successful.\n");
+
+            if (f != stdin)
+                fclose(f);
         }
 
-        fprintf(stderr, "Verified.\n");
-        
-        if (f != stdin)
-            fclose(f);
+
+        // ---------------------------------------------------------
+        // Reset
+        // ---------------------------------------------------------
+
+        flash_power_down();
+
+        set_gpio(1, 1);
+        usleep(250000);
+
+        fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
     }
-
-
-    // ---------------------------------------------------------
-    // Reset
-    // ---------------------------------------------------------
-
-    flash_power_down();
-
-    set_gpio(1, 1);
-    usleep(250000);
-
-    fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
-    
 
 
     // ---------------------------------------------------------
     // Exit
     // ---------------------------------------------------------
-    fprintf(stderr, "Finished.\n");
+
+    fprintf(stderr, "Bye.\n");
     ftdi_set_latency_timer(&ftdic, ftdi_latency);
     ftdi_disable_bitbang(&ftdic);
     ftdi_usb_close(&ftdic);
     ftdi_deinit(&ftdic);
-    return NULL;
+    return 0;
 }
-
-// int icestorm_main(int argc, char *argv[])
-// {
-//     int read_size = 256 * 1024;
-//     int rw_offset = 0;
-
-//     bool read_mode = false;
-//     bool check_mode = false;
-//     bool bulk_erase = false;
-//     bool dont_erase = false;
-//     bool prog_sram = false;
-//     bool test_mode = false;
-//     const char *filename = NULL;
-//     const char *devstr = NULL;
-//     enum ftdi_interface ifnum = INTERFACE_A;
-
-//     int opt;
-//     char *endptr;
-//     while ((opt = getopt(argc, argv, "d:I:rR:o:cbnStv")) != -1)
-//     {
-//         switch (opt)
-//         {
-//         case 'd':
-//             devstr = optarg;
-//             break;
-//         case 'I':
-//             if (!strcmp(optarg, "A")) ifnum = INTERFACE_A;
-//             else if (!strcmp(optarg, "B")) ifnum = INTERFACE_B;
-//             else if (!strcmp(optarg, "C")) ifnum = INTERFACE_C;
-//             else if (!strcmp(optarg, "D")) ifnum = INTERFACE_D;
-//             else help(argv[0]);
-//             break;
-//         case 'r':
-//             read_mode = true;
-//             break;
-//         case 'R':
-//             read_mode = true;
-//             read_size = strtol(optarg, &endptr, 0);
-//             if (!strcmp(endptr, "k")) read_size *= 1024;
-//             if (!strcmp(endptr, "M")) read_size *= 1024 * 1024;
-//             break;
-//         case 'o':
-//             rw_offset = strtol(optarg, &endptr, 0);
-//             if (!strcmp(endptr, "k")) rw_offset *= 1024;
-//             if (!strcmp(endptr, "M")) rw_offset *= 1024 * 1024;
-//             break;
-//         case 'c':
-//             check_mode = true;
-//             break;
-//         case 'b':
-//             bulk_erase = true;
-//             break;
-//         case 'n':
-//             dont_erase = true;
-//             break;
-//         case 'S':
-//             prog_sram = true;
-//             break;
-//         case 't':
-//             test_mode = true;
-//             break;
-//         case 'v':
-//             verbose = true;
-//             break;
-//         default:
-//             help(argv[0]);
-//         }
-//     }
-
-//     if (read_mode + check_mode + prog_sram + test_mode > 1)
-//         help(argv[0]);
-
-//     if (bulk_erase && dont_erase)
-//         help(argv[0]);
-
-//     if (optind+1 != argc && !test_mode) {
-//         if (bulk_erase && optind == argc)
-//             filename = "/dev/null";
-//         else
-//             help(argv[0]);
-//     } else
-//         filename = argv[optind];
-
-//     // ---------------------------------------------------------
-//     // Initialize USB connection to FT2232H
-//     // ---------------------------------------------------------
-
-//     fprintf(stderr, "init..\n");
-
-//     ftdi_init(&ftdic);
-//     ftdi_set_interface(&ftdic, ifnum);
-
-//     if (devstr != NULL) {
-//         if (ftdi_usb_open_string(&ftdic, devstr)) {
-//             fprintf(stderr, "Can't find iCE FTDI USB device (device string %s).\n", devstr);
-//             error();
-//         }
-//     } else {
-//         if (ftdi_usb_open(&ftdic, 0x0403, 0x6010)) {
-//             fprintf(stderr, "Can't find iCE FTDI USB device (vendor_id 0x0403, device_id 0x6010).\n");
-//             error();
-//             return -1;
-//         }
-//     }
-
-//     ftdic_open = true;
-
-//     if (ftdi_usb_reset(&ftdic)) {
-//         fprintf(stderr, "Failed to reset iCE FTDI USB device.\n");
-//         error();
-//     }
-
-//     if (ftdi_usb_purge_buffers(&ftdic)) {
-//         fprintf(stderr, "Failed to purge buffers on iCE FTDI USB device.\n");
-//         error();
-//     }
-
-//     if (ftdi_get_latency_timer(&ftdic, &ftdi_latency) < 0) {
-//         fprintf(stderr, "Failed to get latency timer (%s).\n", ftdi_get_error_string(&ftdic));
-//         error();
-//     }
-
-//     /* 1 is the fastest polling, it means 1 kHz polling */
-//     if (ftdi_set_latency_timer(&ftdic, 1) < 0) {
-//         fprintf(stderr, "Failed to set latency timer (%s).\n", ftdi_get_error_string(&ftdic));
-//         error();
-//     }
-
-//     ftdic_latency_set = true;
-
-//     if (ftdi_set_bitmode(&ftdic, 0xff, BITMODE_MPSSE) < 0) {
-//         fprintf(stderr, "Failed set BITMODE_MPSSE on iCE FTDI USB device.\n");
-//         error();
-//     }
-
-//     // enable clock divide by 5
-//     send_byte(0x8b);
-
-//     // set 6 MHz clock
-//     send_byte(0x86);
-//     send_byte(0x00);
-//     send_byte(0x00);
-
-//     fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
-
-//     set_gpio(1, 1);
-//     usleep(100000);
-
-
-//     if (test_mode)
-//     {
-//         fprintf(stderr, "reset..\n");
-
-//         set_gpio(1, 0);
-//         usleep(250000);
-
-//         fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
-
-//         flash_power_up();
-
-//         flash_read_id();
-
-//         flash_power_down();
-
-//         set_gpio(1, 1);
-//         usleep(250000);
-
-//         fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
-//     }
-//     else if (prog_sram)
-//     {
-//         // ---------------------------------------------------------
-//         // Reset
-//         // ---------------------------------------------------------
-
-//         fprintf(stderr, "reset..\n");
-
-//         set_gpio(0, 0);
-//         usleep(100);
-
-//         set_gpio(0, 1);
-//         usleep(2000);
-
-//         fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
-
-
-//         // ---------------------------------------------------------
-//         // Program
-//         // ---------------------------------------------------------
-
-//         FILE *f = (strcmp(filename, "-") == 0) ? stdin :
-//             fopen(filename, "rb");
-//         if (f == NULL) {
-//             fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
-//             error();
-//         }
-
-//         fprintf(stderr, "programming..\n");
-//         while (1)
-//         {
-//             static unsigned char buffer[4096];
-//             int rc = fread(buffer, 1, 4096, f);
-//             if (rc <= 0) break;
-//             if (verbose)
-//                 fprintf(stderr, "sending %d bytes.\n", rc);
-//             send_spi(buffer, rc);
-//         }
-
-//         if (f != stdin)
-//             fclose(f);
-
-//         // add 48 dummy bits
-//         send_byte(0x8f);
-//         send_byte(0x05);
-//         send_byte(0x00);
-
-//         // add 1 more dummy bit
-//         send_byte(0x8e);
-//         send_byte(0x00);
-
-//         fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
-//     }
-//     else
-//     {
-//         // ---------------------------------------------------------
-//         // Reset
-//         // ---------------------------------------------------------
-
-//         fprintf(stderr, "reset..\n");
-
-//         set_gpio(1, 0);
-//         usleep(250000);
-
-//         fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
-
-//         flash_power_up();
-
-//         flash_read_id();
-
-
-//         // ---------------------------------------------------------
-//         // Program
-//         // ---------------------------------------------------------
-
-//         if (!read_mode && !check_mode)
-//         {
-//             FILE *f = (strcmp(filename, "-") == 0) ? stdin :
-//                 fopen(filename, "rb");
-//             if (f == NULL) {
-//                 fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
-//                 error();
-//             }
-
-//             if (!dont_erase)
-//             {
-//                 if (bulk_erase)
-//                 {
-//                     flash_write_enable();
-//                     flash_bulk_erase();
-//                     flash_wait();
-//                 }
-//                 else
-//                 {
-//                     struct stat st_buf;
-//                     if (stat(filename, &st_buf)) {
-//                         fprintf(stderr, "Error: Can't stat '%s': %s\n", filename, strerror(errno));
-//                         error();
-//                     }
-
-//                     fprintf(stderr, "file size: %d\n", (int)st_buf.st_size);
-
-//                     int begin_addr = rw_offset & ~0xffff;
-//                     int end_addr = (rw_offset + (int)st_buf.st_size + 0xffff) & ~0xffff;
-
-//                     for (int addr = begin_addr; addr < end_addr; addr += 0x10000) {
-//                         flash_write_enable();
-//                         flash_64kB_sector_erase(addr);
-//                         flash_wait();
-//                     }
-//                 }
-//             }
-
-//             fprintf(stderr, "programming..\n");
-
-//             for (int rc, addr = 0; true; addr += rc) {
-//                 uint8_t buffer[256];
-//                 int page_size = 256 - (rw_offset + addr) % 256;
-//                 rc = fread(buffer, 1, page_size, f);
-//                 if (rc <= 0) break;
-//                 flash_write_enable();
-//                 flash_prog(rw_offset + addr, buffer, rc);
-//                 flash_wait();
-//             }
-
-//             if (f != stdin)
-//                 fclose(f);
-//         }
-
-
-//         // ---------------------------------------------------------
-//         // Read/Verify
-//         // ---------------------------------------------------------
-
-//         if (read_mode)
-//         {
-//             FILE *f = (strcmp(filename, "-") == 0) ? stdout :
-//                 fopen(filename, "wb");
-//             if (f == NULL) {
-//                 fprintf(stderr, "Error: Can't open '%s' for writing: %s\n", filename, strerror(errno));
-//                 error();
-//             }
-
-//             fprintf(stderr, "reading..\n");
-//             for (int addr = 0; addr < read_size; addr += 256) {
-//                 uint8_t buffer[256];
-//                 flash_read(rw_offset + addr, buffer, 256);
-//                 fwrite(buffer, 256, 1, f);
-//             }
-
-//             if (f != stdout)
-//                 fclose(f);
-//         }
-//         else
-//         {
-//             FILE *f = (strcmp(filename, "-") == 0) ? stdin :
-//                 fopen(filename, "rb");
-//             if (f == NULL) {
-//                 fprintf(stderr, "Error: Can't open '%s' for reading: %s\n", filename, strerror(errno));
-//                 error();
-//             }
-
-//             fprintf(stderr, "reading..\n");
-//             for (int addr = 0; true; addr += 256) {
-//                 uint8_t buffer_flash[256], buffer_file[256];
-//                 int rc = fread(buffer_file, 1, 256, f);
-//                 if (rc <= 0) break;
-//                 flash_read(rw_offset + addr, buffer_flash, rc);
-//                 if (memcmp(buffer_file, buffer_flash, rc)) {
-//                     fprintf(stderr, "Found difference between flash and file!\n");
-//                     error();
-//                 }
-//             }
-
-//             fprintf(stderr, "Verification successful.\n");
-
-//             if (f != stdin)
-//                 fclose(f);
-//         }
-
-
-//         // ---------------------------------------------------------
-//         // Reset
-//         // ---------------------------------------------------------
-
-//         flash_power_down();
-
-//         set_gpio(1, 1);
-//         usleep(250000);
-
-//         fprintf(stderr, "cdone: %s\n", get_cdone() ? "high" : "low");
-//     }
-
-
-//     // ---------------------------------------------------------
-//     // Exit
-//     // ---------------------------------------------------------
-
-//     fprintf(stderr, "Bye.\n");
-//     ftdi_set_latency_timer(&ftdic, ftdi_latency);
-//     ftdi_disable_bitbang(&ftdic);
-//     ftdi_usb_close(&ftdic);
-//     ftdi_deinit(&ftdic);
-//     return 0;
-// }
 

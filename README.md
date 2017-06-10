@@ -1,12 +1,14 @@
 # Malice (Beta)
-A simple interface for the iceprog program written in Vala.
+A simple interface for [Icestorm/iceprog] written in Vala.
 
-Not sure if it works yet.
+Supports iCE40-HX8K Breakout Board and iCEStick Evaluation Kit, so far.
 
 # Dependencies
-Vala, GTK+ 3.0. Tested on macOS and elementary OS.
+Vala 0.36.3 or higher, GTK+ 3.0 or higher. Tested on macOS and elementary OS.
 
 # Usage
+Using bash...
+
 ```bash
     make
     ./Malice

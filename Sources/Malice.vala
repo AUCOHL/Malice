@@ -142,8 +142,6 @@ int main (string[] args)
     malice_elements.programbutton = builder.get_object("programbutton") as Button;
     malice_elements.messagelabel = builder.get_object("messagelabel") as Label;
 
-    stderr.printf("%s", malice_elements.filechooser.get_uri());
-
     malice_elements.messagelabel.wrap = true;
 
     builder.connect_signals(null);
@@ -158,7 +156,7 @@ int main (string[] args)
     malice_elements.filechooser.selection_changed.connect(
         () =>
         {
-            var chosen = (malice_elements.filechooser.get_uri() != "(null)");
+            var chosen = (malice_elements.filechooser.get_filename() != null);
 
             if (chosen)
             {
@@ -173,7 +171,7 @@ int main (string[] args)
     malice_elements.programbutton.clicked.connect(
         () =>
         {
-            var error = iceprog_program(!(malice_elements.flashoption.active), malice_elements.filechooser.get_uri());
+            var error = iceprog_program(!(malice_elements.flashoption.active), malice_elements.filechooser.get_filename());
             if (error != null)
             {
                 var errorString = (string)error;

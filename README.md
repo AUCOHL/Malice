@@ -1,10 +1,10 @@
 # Malice (Beta)
-A simple interface for the iceprog program.
+A simple interface for the iceprog program written in Vala.
 
-It doesn't work yet.
+Not sure if it works yet.
 
 # Dependencies
-Vala, GTK+ 3.0.
+Vala, GTK+ 3.0. Tested on macOS and elementary OS.
 
 # Usage
 ```bash

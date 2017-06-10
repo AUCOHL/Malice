@@ -1,0 +1,5 @@
+Build/
+**/*.o
+Malice
+**/#malice.glade#
+**/malice.glade~

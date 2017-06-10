@@ -41,6 +41,23 @@ struct Malice
 }
 Malice malice_elements;
 
+async void program()
+{
+    var error = iceprog_program(!(malice_elements.flashoption.active), malice_elements.filechooser.get_filename());
+    if (error != null)
+    {
+        var errorString = (string)error;
+        malice_elements.messagelabel.label = errorString;
+    }
+    else
+    {
+        malice_elements.messagelabel.label = "Succeeded.";
+    }
+
+    malice_elements.programbutton.sensitive = true;
+    malice_elements.programbutton.label = "Program";
+}
+
 async void check_board()
 {
     var board = malice_elements.boardselector.active - 1;
@@ -171,16 +188,15 @@ int main (string[] args)
     malice_elements.programbutton.clicked.connect(
         () =>
         {
-            var error = iceprog_program(!(malice_elements.flashoption.active), malice_elements.filechooser.get_filename());
-            if (error != null)
-            {
-                var errorString = (string)error;
-                malice_elements.messagelabel.label = errorString;
-            }
-            else
-            {
-                malice_elements.messagelabel.label = "Succeeded.";
-            }
+            malice_elements.programbutton.sensitive = false;
+            malice_elements.programbutton.label = "Programming...";
+
+            program.begin(
+                (obj, res) =>
+                {
+                    program.end(res);
+                }
+            );
         }
     );
 

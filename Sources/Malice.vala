@@ -159,8 +159,6 @@ int main (string[] args)
     malice_elements.programbutton = builder.get_object("programbutton") as Button;
     malice_elements.messagelabel = builder.get_object("messagelabel") as Label;
 
-    malice_elements.messagelabel.wrap = true;
-
     builder.connect_signals(null);
     window.show_all();
     

@@ -28,7 +28,6 @@ extern char * iceprog_program(bool prog_sram, char * filename);
 
 struct Malice
 {
-    //To-do: Mutex
     Spinner ftdispinner;
     Image ftdistatus;
     Label ftdimessage;
@@ -40,9 +39,11 @@ struct Malice
     Label messagelabel;
 }
 Malice malice_elements;
+Mutex ui_mutex;
 
 async void program()
 {
+    ui_mutex.lock();
     var error = iceprog_program(!(malice_elements.flashoption.active), malice_elements.filechooser.get_filename());
     if (error != null)
     {
@@ -56,10 +57,12 @@ async void program()
 
     malice_elements.programbutton.sensitive = true;
     malice_elements.programbutton.label = "Program";
+    ui_mutex.unlock();
 }
 
 async void check_board()
 {
+    ui_mutex.lock();
     var board = malice_elements.boardselector.active - 1;
     if (board < 0)
     {
@@ -67,6 +70,7 @@ async void check_board()
         malice_elements.flashoption.sensitive = false;
         malice_elements.programbutton.sensitive = false;
         malice_elements.messagelabel.label = "";
+        ui_mutex.unlock();
         return;
     }
     malice_elements.filechooser.sensitive = true;
@@ -94,10 +98,12 @@ async void check_board()
     {
         malice_elements.messagelabel.label = "";                
     }
+    ui_mutex.unlock();
 }
 
 async void check_programmer()
 {
+    ui_mutex.lock();
     malice_elements.ftdistatus.visible = false;
     malice_elements.ftdispinner.visible = true;
     malice_elements.ftdirefresh.visible = false;
@@ -119,6 +125,7 @@ async void check_programmer()
     malice_elements.ftdistatus.visible = true;
     malice_elements.ftdispinner.visible = false;
     malice_elements.ftdirefresh.visible = true;
+    ui_mutex.unlock();
     check_board();
 }
 
@@ -186,8 +193,10 @@ int main (string[] args)
     malice_elements.programbutton.clicked.connect(
         () =>
         {
+            ui_mutex.lock();
             malice_elements.programbutton.sensitive = false;
             malice_elements.programbutton.label = "Programming...";
+            ui_mutex.unlock();
 
             program.begin(
                 (obj, res) =>
@@ -203,7 +212,7 @@ int main (string[] args)
     {
         new FPGABoard("iCEStick Evaluation Kit", ProgrammingOptions.SPIFlash, "An unmodified iCEStick does not support SRAM programming. A faulty flash program may render the device inoperable."),
         new FPGABoard("iCE40-HX8K Breakout Board", ProgrammingOptions.Both, "Jumper configuration is needed to switch between SRAM-based programming and SPI flash programming. Check your user manual."),
-        new FPGABoard("iCEStick Evaluation Kit (Modified)", ProgrammingOptions.SRAM, null)
+        new FPGABoard("Other", ProgrammingOptions.Both, "(Note: Picking an unavailable option may render a device inoperable.)")
     };
 
     for (var i = 0; i < FPGABoard.boards.length; i++)
@@ -212,6 +221,7 @@ int main (string[] args)
     }
 
     //Asynchronous Tasks
+    ui_mutex = Mutex();
     check_programmer.begin(
         (obj, res) =>
         {

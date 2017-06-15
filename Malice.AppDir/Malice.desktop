@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Malice
+Icon=Malice
+Exec=Malice
+Comment=GUI Programming Tool for iCE40
+Categories=Development;
+Terminal=false

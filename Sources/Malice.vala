@@ -137,11 +137,11 @@ int main (string[] args)
     var builder = new Builder();
     try
     {
-        builder.add_from_file("Resources/malice.glade");
+        builder.add_from_file("Resources/Malice.glade");
     }
     catch (Error e)
     {
-        stderr.printf("Fatal: Could not load UI file: %s. Malice will now quit.", e.message);
+        stderr.printf("Fatal: Could not load UI file: %s. Malice will now quit.\n", e.message);
         return -1;
     }
 
@@ -149,11 +149,11 @@ int main (string[] args)
     var window = builder.get_object("main") as Window;
     try
     {
-        window.icon = new Gdk.Pixbuf.from_file("Resources/icon.png");
+        window.icon = new Gdk.Pixbuf.from_file("Malice.svg");
     }
     catch (Error e)
     {
-        stderr.printf("Error: Could not load application icon: %s\n", e.message);
+        stderr.printf("Error: Could not load application icon: %s.\n", e.message);
     }
 
     malice_elements.ftdispinner = builder.get_object("ftdispinner") as Spinner;

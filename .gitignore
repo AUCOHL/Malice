@@ -1,5 +1,6 @@
 Build/
 **/*.o
 Malice
+*.AppImage
 **/#malice.glade#
 **/malice.glade~

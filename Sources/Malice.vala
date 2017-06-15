@@ -221,7 +221,7 @@ int main (string[] args)
     }
 
     //Asynchronous Tasks
-    ui_mutex = Mutex();
+    ui_mutex = new Mutex();
     check_programmer.begin(
         (obj, res) =>
         {

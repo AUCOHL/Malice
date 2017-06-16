@@ -1,6 +1,11 @@
 Build/
+DerivedData/
 **/*.o
-Malice
+
+Malice.AppDir/
+**/*.app
 *.AppImage
+Malice
+
 **/#malice.glade#
 **/malice.glade~

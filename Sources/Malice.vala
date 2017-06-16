@@ -25,6 +25,9 @@ class FPGABoard
 
 extern int iceprog_check_programmer();
 extern char * iceprog_program(bool prog_sram, char * filename);
+#if __APPLE__
+extern int getResource(char* filename, char* extension, char* buffer, int bufferSize);
+#endif
 
 struct Malice
 {
@@ -133,11 +136,24 @@ int main (string[] args)
 {
     Gtk.init (ref args);
 
+    char buffer[1024];
+
     //Load XML
     var builder = new Builder();
     try
     {
-        builder.add_from_file("Resources/Malice.glade");
+        #if __APPLE__
+            if (getResource("Malice", "glade", buffer, buffer.length) != 0)
+            {
+                stderr.printf("Fatal: Could not load UI file. Malice will now quit.\n");
+                return -1;
+            }
+            var path = (string)buffer;
+            path.replace("%20", " ");
+            builder.add_from_file(path);
+        #else
+            builder.add_from_file("Resources/Malice.glade");
+        #endif
     }
     catch (Error e)
     {
@@ -149,7 +165,18 @@ int main (string[] args)
     var window = builder.get_object("main") as Window;
     try
     {
-        window.icon = new Gdk.Pixbuf.from_file("Malice.svg");
+        #if __APPLE__
+            if (getResource("Malice", "svg", buffer, buffer.length) != 0)
+            {
+                stderr.printf("Error: Could not load application icon.\n");
+            }
+            else
+            {
+                builder.add_from_file((string)buffer);
+            }
+        #else
+            window.icon = new Gdk.Pixbuf.from_file("Resources/Malice.svg");
+        #endif
     }
     catch (Error e)
     {

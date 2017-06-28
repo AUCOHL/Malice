@@ -6,6 +6,7 @@ Malice.AppDir/
 **/*.app
 *.AppImage
 Malice
+Sources/Malice.c
 
 **/#malice.glade#
 **/malice.glade~

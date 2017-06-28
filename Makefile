@@ -38,5 +38,5 @@ clean:
 	@rm -rf DerivedData
 	@rm -rf Malice.AppDir/
 	@rm -rf Malice.app
-	@echo '' > Sources/Malice.c
+	@rm -f Sources/Malice.c
 	@rm -f *.AppImage

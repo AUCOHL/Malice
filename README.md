@@ -6,7 +6,7 @@ Supports the iCE40-HX8K Breakout Board and the iCEStick Evaluation Kit, so far.
 # Dependencies
 Vala 0.36.3 or higher, GTK+ 3.0 or higher.
 
-Xcode is also needed on macOS.
+Xcode and Dylibbundler are also needed on macOS.
 
 # Usage
 ## Unix
@@ -17,7 +17,9 @@ Using your favorite terminal emulator:
     ./Build/Malice
 ```
 
-Mind you, the resources are location-sensitive if you use them this way.
+Mind you, the resources are location-sensitive if you use the application in this manner.
+
+macOS is not supported in this manner because of how resources are handled in the .app file.
 
 ## Linux
 Again, using your favorite terminal emulator:
@@ -29,10 +31,10 @@ Again, using your favorite terminal emulator:
 Then double click Malice.AppImage. Technology is amazing sometimes.
 
 ## macOS
-This version is extremely and unsupported because the GTK+ developers are not interested in providing a framework and packaging a .app without Xcode will need quite a bit of research.
+**WARNING: This version is extremely finicky and unsupported.**
 
-### Non-portable Setup
-You will need to do it every time the .xcodeproj changes, including when you first clone/download the repository. It's recommended you do not commit your .xcodeproj.
+### First Time Setup
+You will need to do it every time the .xcodeproj changes, including when you first clone/download the repository. It is recommended that you do not commit your .xcodeproj by using `git reset Malice.xcodeproj/` before committing any changes.
 
 On the terminal:
     
@@ -51,7 +53,7 @@ On the terminal:
 
 A Malice.app should appear in the root folder.
 
-Unlike the Linux version, this is *not* portable. Well, actually: They're both quite the same, except most Linux-based OSes come with GTK+ and macOS doesn't.
+Unlike the Linux version, this is *not* portable. Well, actually: They're both quite the same, except most Linux-based OSes come with GTK+ and macOS doesn't, so on Linux it is portable and on macOS it is not
 
 ## Windows
 Windows is not yet supported.

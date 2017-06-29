@@ -1,0 +1,15 @@
+language: c
+sudo: enabled
+dist: trusty
+
+services:
+  - docker
+
+env:
+  - ARCH=i686 DOCKER_IMAGE=ioft/i386-ubuntu:trusty LAUNCH="linux32 --32bit i386 bash -c"
+  - ARCH=x86_64 DOCKER_IMAGE=library/ubuntu:trusty LAUNCH="bash -c"
+
+script:
+    - mkdir -p Build/
+    - docker run --cap-add SYS_ADMIN --device /dev/fuse:/dev/fuse:mrw -i -v "${PWD}:/Malice" "$DOCKER_IMAGE" /bin/bash -c "cd /Malice ; $LAUNCH Resources/travis_dependencies.sh ; $LAUNCH make"
+    - curl -s https://raw.githubusercontent.com/probonopd/uploadtool/master/upload.sh | bash -s Malice_*.AppImage

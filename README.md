@@ -4,9 +4,14 @@ A simple interface for [iceprog](https://github.com/cliffordwolf/icestorm). Core
 Supports the iCE40-HX8K Breakout Board and the iCEStick Evaluation Kit, so far.
 
 # Dependencies
-Vala 0.36.3 or higher, GTK+ 3.0 or higher.
+## Running
+GTK+ 3.0 or higher.
 
-Xcode and Dylibbundler are also needed on macOS.
+## Building
+Make, GTK+ 3.0 or higher, Vala 0.36.3 or higher.
+
+### macOS
+Xcode is also needed, as well as [DylibBundler](https://github.com/auriamg/macdylibbundler).
 
 # Usage
 ## Unix

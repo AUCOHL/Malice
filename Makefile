@@ -1,14 +1,24 @@
-VALAFLAGS = --pkg gtk+-3.0
+ARCH=$(shell uname -i)
+
+ifeq ($(OS),Windows_NT)
+all:
+	@echo Unsupported OS.
+else
 ifeq ($(shell uname),Darwin)
-	VALAFLAGS += -D __APPLE__
+all: app
+else
+ifeq ($(shell uname),Linux)
+all: appimage
+else
+all:
+	@echo Unsupported OS.
+endif
+endif
 endif
 
-all:
-	@echo make unix, make appimage or make app
-base:
+unix:
 	@mkdir -p Build
 	@valac -C --pkg gtk+-3.0 Sources/Malice.vala
-unix: base
 	@cc -O3 `pkg-config --cflags gtk+-3.0` -std=c99 FTDI/ftdi.c Icestorm/iceprog.c Sources/*.c `pkg-config --libs gtk+-3.0` -lusb -o Build/Malice
 appimage: unix
 	@mkdir -p Malice.AppDir
@@ -21,9 +31,9 @@ appimage: unix
 	@cp Resources/Malice.desktop Malice.AppDir/
 	@cp Resources/Malice.glade Malice.AppDir/Resources/
 	@cp Resources/Malice.svg Malice.AppDir/Resources/
-	@appimagetool Malice.AppDir Malice.AppImage
+	@appimagetool Malice.AppDir Malice_${ARCH}.AppImage
 	@rm -rf Malice.AppDir
-mac_libraries: base
+mac_libraries: unix
 	@valac -C -D __APPLE__ --pkg gtk+-3.0 Sources/Malice.vala
 	@cc -O3 `pkg-config --cflags gtk+-3.0` -std=c99 FTDI/ftdi.c Icestorm/iceprog.c Sources/*.c `pkg-config --libs gtk+-3.0` -lusb -o Build/Malice
 	@mkdir -p Build/Libraries/

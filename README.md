@@ -14,31 +14,21 @@ Make, GTK+ 3.0 or higher, Vala 0.36.3 or higher.
 Xcode is also needed, as well as [DylibBundler](https://github.com/auriamg/macdylibbundler).
 
 # Usage
-## Unix
+## Binaries
+Right now, Linux AppImages are available under Releases for x86 and x86_64. Download the version corresponding to your architecture, mark it as executable (using either `chmod a+x *.AppImage` or from your file manager's properties) then (double-)click on the icon.
+
+## From Source
 Using your favorite terminal emulator:
 
 ```bash
-    make unix
-    ./Build/Malice
+    make
 ```
 
-Mind you, the resources are location-sensitive if you use the application in this manner.
+Either an .app or a .AppImage file (depending on your operating system) should appear in your root folder.
 
-macOS is not supported in this manner because of how resources are handled in the .app file.
+### First Time Setup on maCOS
+**WARNING: This version is extremely finicky and unsupported. It is under active development and thus may break between commits.**
 
-## Linux
-Again, using your favorite terminal emulator:
-
-```bash
-    make appimage
-```
-
-Then double click Malice.AppImage. Technology is amazing sometimes.
-
-## macOS
-**WARNING: This version is extremely finicky and unsupported.**
-
-### First Time Setup
 You will need to do it every time the .xcodeproj changes, including when you first clone/download the repository. It is recommended that you do not commit your .xcodeproj by using `git reset Malice.xcodeproj/` before committing any changes.
 
 On the terminal:
@@ -51,17 +41,16 @@ In Xcode, manually change Build Settings > Other C Flags to the contents of cfla
 
 Remove all dylibs from the project and readd the ones in Build/Libraries.
 
-### App
-On the terminal:
+The again on the terminal:
 
-    make app
+    make
 
 A Malice.app should appear in the root folder.
 
-Unlike the Linux version, this is *not* portable. Well, actually: They're both quite the same, except most Linux-based OSes come with GTK+ and macOS doesn't, so on Linux it is portable and on macOS it is not
+Unlike the Linux version, this is *not* portable. Well, actually: They're both quite the same, except most Linux-based OSes come with GTK+ and macOS doesn't, so on Linux it is portable and on macOS it is not. I'm working on something better.
 
 ## Windows
-Windows is not yet supported.
+Coming soon.
 
 # License
 GNU General Public License v2 or (at your option), any later version. Check 'LICENSE'.

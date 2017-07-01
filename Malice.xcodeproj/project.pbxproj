@@ -7,88 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		70C2630F1EF3302D00F0977D /* Malice.svg in Resources */ = {isa = PBXBuildFile; fileRef = 70C2630D1EF3302D00F0977D /* Malice.svg */; };
-		70C263111EF3313600F0977D /* Malice.glade in Resources */ = {isa = PBXBuildFile; fileRef = 70C263101EF3313600F0977D /* Malice.glade */; };
-		70C2632D1EF3390B00F0977D /* Malice.c in Sources */ = {isa = PBXBuildFile; fileRef = 70C2632C1EF3390B00F0977D /* Malice.c */; };
-		70C263DA1EF3EA5800F0977D /* libatk-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263CD1EF3EA5800F0977D /* libatk-1.0.0.dylib */; };
-		70C263DB1EF3EA5800F0977D /* libcairo-gobject.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263CE1EF3EA5800F0977D /* libcairo-gobject.2.dylib */; };
-		70C263DC1EF3EA5800F0977D /* libcairo.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263CF1EF3EA5800F0977D /* libcairo.2.dylib */; };
-		70C263DD1EF3EA5800F0977D /* libgdk_pixbuf-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D01EF3EA5800F0977D /* libgdk_pixbuf-2.0.0.dylib */; };
-		70C263DE1EF3EA5800F0977D /* libgdk-3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D11EF3EA5800F0977D /* libgdk-3.0.dylib */; };
-		70C263DF1EF3EA5800F0977D /* libgio-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D21EF3EA5800F0977D /* libgio-2.0.0.dylib */; };
-		70C263E01EF3EA5800F0977D /* libglib-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D31EF3EA5800F0977D /* libglib-2.0.0.dylib */; };
-		70C263E11EF3EA5800F0977D /* libgobject-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D41EF3EA5800F0977D /* libgobject-2.0.0.dylib */; };
-		70C263E21EF3EA5800F0977D /* libgtk-3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D51EF3EA5800F0977D /* libgtk-3.0.dylib */; };
-		70C263E31EF3EA5800F0977D /* libintl.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D61EF3EA5800F0977D /* libintl.8.dylib */; };
-		70C263E41EF3EA5800F0977D /* libpango-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D71EF3EA5800F0977D /* libpango-1.0.0.dylib */; };
-		70C263E51EF3EA5800F0977D /* libpangocairo-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D81EF3EA5800F0977D /* libpangocairo-1.0.0.dylib */; };
-		70C263E61EF3EA5800F0977D /* libusb-0.1.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C263D91EF3EA5800F0977D /* libusb-0.1.4.dylib */; };
-		70D215CC1EF2FEE900192989 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70D215CB1EF2FEE900192989 /* Assets.xcassets */; };
-		70D215DA1EF3024300192989 /* ftdi.c in Sources */ = {isa = PBXBuildFile; fileRef = 70D215D81EF3024300192989 /* ftdi.c */; };
-		70D215DE1EF3025800192989 /* iceprog.c in Sources */ = {isa = PBXBuildFile; fileRef = 70D215DD1EF3025800192989 /* iceprog.c */; };
-		70D215FC1EF30BD000192989 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70D215FB1EF30BD000192989 /* CoreFoundation.framework */; };
-		70D2161F1EF3254900192989 /* Resources.c in Sources */ = {isa = PBXBuildFile; fileRef = 70D2161E1EF3254900192989 /* Resources.c */; };
+		702AA22C1F085184006108D5 /* Malice.glade in Resources */ = {isa = PBXBuildFile; fileRef = 702AA2131F084C31006108D5 /* Malice.glade */; };
+		702AA22D1F085184006108D5 /* Malice.svg in Resources */ = {isa = PBXBuildFile; fileRef = 702AA2141F084C31006108D5 /* Malice.svg */; };
+		702AA22E1F085184006108D5 /* Termites.txt in Resources */ = {isa = PBXBuildFile; fileRef = 70E22EDB1F08464100378318 /* Termites.txt */; };
+		70F1FD9C1F0855CA0016A776 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F1FD9B1F0855CA0016A776 /* main.swift */; };
+		70F1FD9D1F0855E80016A776 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70E22ED71F083C7E00378318 /* Media.xcassets */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		70C263531EF34EE500F0977D /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		70C2630D1EF3302D00F0977D /* Malice.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Malice.svg; path = Resources/Malice.svg; sourceTree = SOURCE_ROOT; };
-		70C263101EF3313600F0977D /* Malice.glade */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Malice.glade; path = Resources/Malice.glade; sourceTree = SOURCE_ROOT; };
-		70C2632C1EF3390B00F0977D /* Malice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Malice.c; path = Sources/Malice.c; sourceTree = SOURCE_ROOT; };
-		70C263CD1EF3EA5800F0977D /* libatk-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libatk-1.0.0.dylib"; path = "Build/Libraries/libatk-1.0.0.dylib"; sourceTree = "<group>"; };
-		70C263CE1EF3EA5800F0977D /* libcairo-gobject.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libcairo-gobject.2.dylib"; path = "Build/Libraries/libcairo-gobject.2.dylib"; sourceTree = "<group>"; };
-		70C263CF1EF3EA5800F0977D /* libcairo.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcairo.2.dylib; path = Build/Libraries/libcairo.2.dylib; sourceTree = "<group>"; };
-		70C263D01EF3EA5800F0977D /* libgdk_pixbuf-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libgdk_pixbuf-2.0.0.dylib"; path = "Build/Libraries/libgdk_pixbuf-2.0.0.dylib"; sourceTree = "<group>"; };
-		70C263D11EF3EA5800F0977D /* libgdk-3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libgdk-3.0.dylib"; path = "Build/Libraries/libgdk-3.0.dylib"; sourceTree = "<group>"; };
-		70C263D21EF3EA5800F0977D /* libgio-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libgio-2.0.0.dylib"; path = "Build/Libraries/libgio-2.0.0.dylib"; sourceTree = "<group>"; };
-		70C263D31EF3EA5800F0977D /* libglib-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libglib-2.0.0.dylib"; path = "Build/Libraries/libglib-2.0.0.dylib"; sourceTree = "<group>"; };
-		70C263D41EF3EA5800F0977D /* libgobject-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libgobject-2.0.0.dylib"; path = "Build/Libraries/libgobject-2.0.0.dylib"; sourceTree = "<group>"; };
-		70C263D51EF3EA5800F0977D /* libgtk-3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libgtk-3.0.dylib"; path = "Build/Libraries/libgtk-3.0.dylib"; sourceTree = "<group>"; };
-		70C263D61EF3EA5800F0977D /* libintl.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libintl.8.dylib; path = Build/Libraries/libintl.8.dylib; sourceTree = "<group>"; };
-		70C263D71EF3EA5800F0977D /* libpango-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libpango-1.0.0.dylib"; path = "Build/Libraries/libpango-1.0.0.dylib"; sourceTree = "<group>"; };
-		70C263D81EF3EA5800F0977D /* libpangocairo-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libpangocairo-1.0.0.dylib"; path = "Build/Libraries/libpangocairo-1.0.0.dylib"; sourceTree = "<group>"; };
-		70C263D91EF3EA5800F0977D /* libusb-0.1.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libusb-0.1.4.dylib"; path = "Build/Libraries/libusb-0.1.4.dylib"; sourceTree = "<group>"; };
-		70D215BF1EF2FEE900192989 /* Malice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Malice.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		70D215CB1EF2FEE900192989 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
-		70D215D01EF2FEE900192989 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Info.plist; sourceTree = "<group>"; };
-		70D215D81EF3024300192989 /* ftdi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftdi.c; path = FTDI/ftdi.c; sourceTree = SOURCE_ROOT; };
-		70D215D91EF3024300192989 /* ftdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ftdi.h; path = FTDI/ftdi.h; sourceTree = SOURCE_ROOT; };
-		70D215DD1EF3025800192989 /* iceprog.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = iceprog.c; path = Icestorm/iceprog.c; sourceTree = SOURCE_ROOT; };
-		70D215FB1EF30BD000192989 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		70D216171EF3148700192989 /* Malice.vala */ = {isa = PBXFileReference; lastKnownFileType = text; name = Malice.vala; path = Sources/Malice.vala; sourceTree = SOURCE_ROOT; };
-		70D2161E1EF3254900192989 /* Resources.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Resources.c; path = Sources/Resources.c; sourceTree = SOURCE_ROOT; };
+		702AA2131F084C31006108D5 /* Malice.glade */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Malice.glade; path = Resources/Malice.glade; sourceTree = SOURCE_ROOT; };
+		702AA2141F084C31006108D5 /* Malice.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Malice.svg; path = Resources/Malice.svg; sourceTree = SOURCE_ROOT; };
+		702AA21D1F085173006108D5 /* Malice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Malice.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		702AA2281F085173006108D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70E22ED71F083C7E00378318 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Resources/Media.xcassets; sourceTree = SOURCE_ROOT; };
+		70E22EDB1F08464100378318 /* Termites.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Termites.txt; path = Resources/Termites.txt; sourceTree = SOURCE_ROOT; };
+		70F1FD9B1F0855CA0016A776 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		70D215BC1EF2FEE900192989 /* Frameworks */ = {
+		702AA21A1F085173006108D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70C263E41EF3EA5800F0977D /* libpango-1.0.0.dylib in Frameworks */,
-				70C263E51EF3EA5800F0977D /* libpangocairo-1.0.0.dylib in Frameworks */,
-				70C263DB1EF3EA5800F0977D /* libcairo-gobject.2.dylib in Frameworks */,
-				70C263DD1EF3EA5800F0977D /* libgdk_pixbuf-2.0.0.dylib in Frameworks */,
-				70C263DF1EF3EA5800F0977D /* libgio-2.0.0.dylib in Frameworks */,
-				70D215FC1EF30BD000192989 /* CoreFoundation.framework in Frameworks */,
-				70C263DE1EF3EA5800F0977D /* libgdk-3.0.dylib in Frameworks */,
-				70C263E21EF3EA5800F0977D /* libgtk-3.0.dylib in Frameworks */,
-				70C263E01EF3EA5800F0977D /* libglib-2.0.0.dylib in Frameworks */,
-				70C263E31EF3EA5800F0977D /* libintl.8.dylib in Frameworks */,
-				70C263DA1EF3EA5800F0977D /* libatk-1.0.0.dylib in Frameworks */,
-				70C263E61EF3EA5800F0977D /* libusb-0.1.4.dylib in Frameworks */,
-				70C263DC1EF3EA5800F0977D /* libcairo.2.dylib in Frameworks */,
-				70C263E11EF3EA5800F0977D /* libgobject-2.0.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,14 +40,13 @@
 			children = (
 				70D215C11EF2FEE900192989 /* Malice */,
 				70D215C01EF2FEE900192989 /* Products */,
-				70D215FA1EF30BD000192989 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		70D215C01EF2FEE900192989 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				70D215BF1EF2FEE900192989 /* Malice.app */,
+				702AA21D1F085173006108D5 /* Malice.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -115,11 +54,12 @@
 		70D215C11EF2FEE900192989 /* Malice */ = {
 			isa = PBXGroup;
 			children = (
-				70C263101EF3313600F0977D /* Malice.glade */,
-				70C2630D1EF3302D00F0977D /* Malice.svg */,
-				70D215CB1EF2FEE900192989 /* Assets.xcassets */,
-				70D215D01EF2FEE900192989 /* Info.plist */,
+				702AA2131F084C31006108D5 /* Malice.glade */,
+				702AA2281F085173006108D5 /* Info.plist */,
+				702AA2141F084C31006108D5 /* Malice.svg */,
+				70E22EDB1F08464100378318 /* Termites.txt */,
 				70D215C51EF2FEE900192989 /* Supporting Files */,
+				70E22ED71F083C7E00378318 /* Media.xcassets */,
 			);
 			path = Malice;
 			sourceTree = "<group>";
@@ -127,48 +67,21 @@
 		70D215C51EF2FEE900192989 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				70C2632C1EF3390B00F0977D /* Malice.c */,
-				70D2161E1EF3254900192989 /* Resources.c */,
-				70D215DD1EF3025800192989 /* iceprog.c */,
-				70D215D81EF3024300192989 /* ftdi.c */,
-				70D215D91EF3024300192989 /* ftdi.h */,
-				70D216171EF3148700192989 /* Malice.vala */,
+				70F1FD9B1F0855CA0016A776 /* main.swift */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		70D215FA1EF30BD000192989 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				70C263CD1EF3EA5800F0977D /* libatk-1.0.0.dylib */,
-				70C263CE1EF3EA5800F0977D /* libcairo-gobject.2.dylib */,
-				70C263CF1EF3EA5800F0977D /* libcairo.2.dylib */,
-				70C263D01EF3EA5800F0977D /* libgdk_pixbuf-2.0.0.dylib */,
-				70C263D11EF3EA5800F0977D /* libgdk-3.0.dylib */,
-				70C263D21EF3EA5800F0977D /* libgio-2.0.0.dylib */,
-				70C263D31EF3EA5800F0977D /* libglib-2.0.0.dylib */,
-				70C263D41EF3EA5800F0977D /* libgobject-2.0.0.dylib */,
-				70C263D51EF3EA5800F0977D /* libgtk-3.0.dylib */,
-				70C263D61EF3EA5800F0977D /* libintl.8.dylib */,
-				70C263D71EF3EA5800F0977D /* libpango-1.0.0.dylib */,
-				70C263D81EF3EA5800F0977D /* libpangocairo-1.0.0.dylib */,
-				70C263D91EF3EA5800F0977D /* libusb-0.1.4.dylib */,
-				70D215FB1EF30BD000192989 /* CoreFoundation.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		70D215BE1EF2FEE900192989 /* Malice */ = {
+		702AA21C1F085173006108D5 /* Malice */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 70D215D31EF2FEE900192989 /* Build configuration list for PBXNativeTarget "Malice" */;
+			buildConfigurationList = 702AA2291F085173006108D5 /* Build configuration list for PBXNativeTarget "Malice" */;
 			buildPhases = (
-				70D215BC1EF2FEE900192989 /* Frameworks */,
-				70D215BB1EF2FEE900192989 /* Sources */,
-				70D215BD1EF2FEE900192989 /* Resources */,
-				70C263531EF34EE500F0977D /* CopyFiles */,
+				702AA2191F085173006108D5 /* Sources */,
+				702AA21A1F085173006108D5 /* Frameworks */,
+				702AA21B1F085173006108D5 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -176,7 +89,7 @@
 			);
 			name = Malice;
 			productName = Malice;
-			productReference = 70D215BF1EF2FEE900192989 /* Malice.app */;
+			productReference = 702AA21D1F085173006108D5 /* Malice.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -185,11 +98,13 @@
 		70D215B71EF2FEE900192989 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Cloud V";
 				TargetAttributes = {
-					70D215BE1EF2FEE900192989 = {
+					702AA21C1F085173006108D5 = {
 						CreatedOnToolsVersion = 8.3.2;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -207,39 +122,68 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				70D215BE1EF2FEE900192989 /* Malice */,
+				702AA21C1F085173006108D5 /* Malice */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		70D215BD1EF2FEE900192989 /* Resources */ = {
+		702AA21B1F085173006108D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70C263111EF3313600F0977D /* Malice.glade in Resources */,
-				70C2630F1EF3302D00F0977D /* Malice.svg in Resources */,
-				70D215CC1EF2FEE900192989 /* Assets.xcassets in Resources */,
+				702AA22C1F085184006108D5 /* Malice.glade in Resources */,
+				702AA22D1F085184006108D5 /* Malice.svg in Resources */,
+				70F1FD9D1F0855E80016A776 /* Media.xcassets in Resources */,
+				702AA22E1F085184006108D5 /* Termites.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		70D215BB1EF2FEE900192989 /* Sources */ = {
+		702AA2191F085173006108D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70C2632D1EF3390B00F0977D /* Malice.c in Sources */,
-				70D215DA1EF3024300192989 /* ftdi.c in Sources */,
-				70D215DE1EF3025800192989 /* iceprog.c in Sources */,
-				70D2161F1EF3254900192989 /* Resources.c in Sources */,
+				70F1FD9C1F0855CA0016A776 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		702AA22A1F085173006108D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Malice/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.cloudv.Malice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		702AA22B1F085173006108D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Malice/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.cloudv.Malice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		70D215D11EF2FEE900192989 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -331,115 +275,23 @@
 			};
 			name = Release;
 		};
-		70D215D41EF2FEE900192989 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Resources/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib,
-					"$(PROJECT_DIR)/Build/Libraries",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CFLAGS = (
-					"-I/usr/local/include",
-					"-D_REENTRANT",
-					"-I/usr/local/Cellar/gtk+3/3.18.7/include/gtk-3.0",
-					"-I/usr/local/Cellar/glib/2.52.2/include/gio-unix-2.0/",
-					"-I/usr/local/Cellar/cairo/1.14.6/include/cairo",
-					"-I/usr/local/Cellar/libepoxy/1.3.1/include",
-					"-I/usr/local/Cellar/pango/1.38.1/include/pango-1.0",
-					"-I/usr/local/Cellar/harfbuzz/1.1.3/include/harfbuzz",
-					"-I/usr/local/Cellar/pango/1.38.1/include/pango-1.0",
-					"-I/usr/local/Cellar/atk/2.18.0_1/include/atk-1.0",
-					"-I/usr/local/Cellar/cairo/1.14.6/include/cairo",
-					"-I/usr/local/Cellar/pixman/0.32.8/include/pixman-1",
-					"-I/usr/local/Cellar/fontconfig/2.11.1_1/include",
-					"-I/usr/local/Cellar/freetype/2.6.2/include/freetype2",
-					"-I/usr/local/opt/freetype/include/freetype2",
-					"-I/usr/local/Cellar/libpng/1.6.28/include/libpng16",
-					"-I/usr/local/Cellar/gdk-pixbuf/2.32.3/include/gdk-pixbuf-2.0",
-					"-I/usr/local/Cellar/libpng/1.6.28/include/libpng16",
-					"-I/usr/local/Cellar/glib/2.52.2/include/glib-2.0",
-					"-I/usr/local/Cellar/glib/2.52.2/lib/glib-2.0/include",
-					"-I/usr/local/opt/gettext/include",
-					"-I/usr/local/Cellar/pcre/8.40/include",
-					"-I/usr/local/Cellar/libusb/1.0.21/include/libusb-1.0",
-				);
-				OTHER_CPLUSPLUSFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = io.cloudv.Malice;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		70D215D51EF2FEE900192989 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Resources/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib,
-					"$(PROJECT_DIR)/Build/Libraries",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CFLAGS = (
-					"-I/usr/local/include",
-					"-D_REENTRANT",
-					"-I/usr/local/Cellar/gtk+3/3.18.7/include/gtk-3.0",
-					"-I/usr/local/Cellar/glib/2.52.2/include/gio-unix-2.0/",
-					"-I/usr/local/Cellar/cairo/1.14.6/include/cairo",
-					"-I/usr/local/Cellar/libepoxy/1.3.1/include",
-					"-I/usr/local/Cellar/pango/1.38.1/include/pango-1.0",
-					"-I/usr/local/Cellar/harfbuzz/1.1.3/include/harfbuzz",
-					"-I/usr/local/Cellar/pango/1.38.1/include/pango-1.0",
-					"-I/usr/local/Cellar/atk/2.18.0_1/include/atk-1.0",
-					"-I/usr/local/Cellar/cairo/1.14.6/include/cairo",
-					"-I/usr/local/Cellar/pixman/0.32.8/include/pixman-1",
-					"-I/usr/local/Cellar/fontconfig/2.11.1_1/include",
-					"-I/usr/local/Cellar/freetype/2.6.2/include/freetype2",
-					"-I/usr/local/opt/freetype/include/freetype2",
-					"-I/usr/local/Cellar/libpng/1.6.28/include/libpng16",
-					"-I/usr/local/Cellar/gdk-pixbuf/2.32.3/include/gdk-pixbuf-2.0",
-					"-I/usr/local/Cellar/libpng/1.6.28/include/libpng16",
-					"-I/usr/local/Cellar/glib/2.52.2/include/glib-2.0",
-					"-I/usr/local/Cellar/glib/2.52.2/lib/glib-2.0/include",
-					"-I/usr/local/opt/gettext/include",
-					"-I/usr/local/Cellar/pcre/8.40/include",
-					"-I/usr/local/Cellar/libusb/1.0.21/include/libusb-1.0",
-				);
-				OTHER_CPLUSPLUSFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = io.cloudv.Malice;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		702AA2291F085173006108D5 /* Build configuration list for PBXNativeTarget "Malice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				702AA22A1F085173006108D5 /* Debug */,
+				702AA22B1F085173006108D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		70D215BA1EF2FEE900192989 /* Build configuration list for PBXProject "Malice" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				70D215D11EF2FEE900192989 /* Debug */,
 				70D215D21EF2FEE900192989 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		70D215D31EF2FEE900192989 /* Build configuration list for PBXNativeTarget "Malice" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				70D215D41EF2FEE900192989 /* Debug */,
-				70D215D51EF2FEE900192989 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -33,16 +33,13 @@ appimage: unix
 	@cp Resources/Malice.svg Malice.AppDir/Resources/
 	@appimagetool Malice.AppDir Malice_${ARCH}.AppImage
 	@rm -rf Malice.AppDir
-mac_libraries: unix
-	@valac -C -D __APPLE__ --pkg gtk+-3.0 Sources/Malice.vala
-	@cc -O3 `pkg-config --cflags gtk+-3.0` -std=c99 FTDI/ftdi.c Icestorm/iceprog.c Sources/*.c `pkg-config --libs gtk+-3.0` -lusb -o Build/Malice
-	@mkdir -p Build/Libraries/
-	@rm -f Build/Libraries/*
-	@cp `otool -L Build/Malice | grep -o '/usr/local/opt/[^\\(]*'` Build/Libraries/
-app: mac_libraries
+app: unix
 	@xcodebuild
-	@dylibbundler -od -b -x Build/Release/Malice.app/Contents/MacOS/Malice -d Build/Release/Malice.app/Contents/libs/ &> /dev/null
 	@cp -r Build/Release/Malice.app/ Malice.app/
+	@rm -rf Malice.app/Contents/_CodeSignature
+	@mkdir -p Malice.app/Contents/usr/
+	@mkdir -p Malice.app/Contents/usr/bin/
+	@cp Build/Malice Malice.app/Contents/usr/bin/Malice
 clean:
 	@rm -rf Build
 	@rm -rf DerivedData

@@ -5,13 +5,13 @@ Supports the iCE40-HX8K Breakout Board and the iCEStick Evaluation Kit, so far.
 
 # Dependencies
 ## Running
-GTK+ 3.0 or higher.
+GTK+ 3.0 or higher. (Planning to statically link in macOS).
 
 ## Building
 Make, GTK+ 3.0 or higher, Vala 0.36.3 or higher.
 
 ### macOS
-Xcode is also needed, as well as [DylibBundler](https://github.com/auriamg/macdylibbundler).
+Xcode is also needed.
 
 # Usage
 ## Binaries
@@ -24,30 +24,7 @@ Using your favorite terminal emulator:
     make
 ```
 
-Either an .app or a .AppImage file (depending on your operating system) should appear in your root folder.
-
-### First Time Setup on maCOS
-**WARNING: This version is extremely finicky and unsupported. It is under active development and thus may break between commits.**
-
-You will need to do it every time the .xcodeproj changes, including when you first clone/download the repository. It is recommended that you do not commit your .xcodeproj by using `git reset Malice.xcodeproj/` before committing any changes.
-
-On the terminal:
-    
-    make mac_libraries
-    -I/usr/local/include > cflags.txt
-    `pkg-config --cflags gtk+-3.0` > cflags.txt
-
-In Xcode, manually change Build Settings > Other C Flags to the contents of cflags.txt.
-
-Remove all dylibs from the project and readd the ones in Build/Libraries.
-
-The again on the terminal:
-
-    make
-
-A Malice.app should appear in the root folder.
-
-Unlike the Linux version, this is *not* portable. Well, actually: They're both quite the same, except most Linux-based OSes come with GTK+ and macOS doesn't, so on Linux it is portable and on macOS it is not. I'm working on something better.
+Either an .app or a .AppImage file (depending on your operating system) should appear in your root folder. Please note that a GTK installation is needed on macOS is as well.
 
 ## Windows
 Coming soon.

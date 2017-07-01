@@ -10,7 +10,7 @@
 		702AA22C1F085184006108D5 /* Malice.glade in Resources */ = {isa = PBXBuildFile; fileRef = 702AA2131F084C31006108D5 /* Malice.glade */; };
 		702AA22D1F085184006108D5 /* Malice.svg in Resources */ = {isa = PBXBuildFile; fileRef = 702AA2141F084C31006108D5 /* Malice.svg */; };
 		702AA22E1F085184006108D5 /* Termites.txt in Resources */ = {isa = PBXBuildFile; fileRef = 70E22EDB1F08464100378318 /* Termites.txt */; };
-		70F1FD9C1F0855CA0016A776 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F1FD9B1F0855CA0016A776 /* main.swift */; };
+		70850E281F085F1D005E7B9A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70850E271F085F1D005E7B9A /* main.swift */; };
 		70F1FD9D1F0855E80016A776 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70E22ED71F083C7E00378318 /* Media.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -18,10 +18,10 @@
 		702AA2131F084C31006108D5 /* Malice.glade */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Malice.glade; path = Resources/Malice.glade; sourceTree = SOURCE_ROOT; };
 		702AA2141F084C31006108D5 /* Malice.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Malice.svg; path = Resources/Malice.svg; sourceTree = SOURCE_ROOT; };
 		702AA21D1F085173006108D5 /* Malice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Malice.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		702AA2281F085173006108D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70850E271F085F1D005E7B9A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/main.swift; sourceTree = SOURCE_ROOT; };
+		70850E291F085F37005E7B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 		70E22ED71F083C7E00378318 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Resources/Media.xcassets; sourceTree = SOURCE_ROOT; };
 		70E22EDB1F08464100378318 /* Termites.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Termites.txt; path = Resources/Termites.txt; sourceTree = SOURCE_ROOT; };
-		70F1FD9B1F0855CA0016A776 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,8 +54,8 @@
 		70D215C11EF2FEE900192989 /* Malice */ = {
 			isa = PBXGroup;
 			children = (
+				70850E291F085F37005E7B9A /* Info.plist */,
 				702AA2131F084C31006108D5 /* Malice.glade */,
-				702AA2281F085173006108D5 /* Info.plist */,
 				702AA2141F084C31006108D5 /* Malice.svg */,
 				70E22EDB1F08464100378318 /* Termites.txt */,
 				70D215C51EF2FEE900192989 /* Supporting Files */,
@@ -67,7 +67,7 @@
 		70D215C51EF2FEE900192989 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				70F1FD9B1F0855CA0016A776 /* main.swift */,
+				70850E271F085F1D005E7B9A /* main.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -146,7 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70F1FD9C1F0855CA0016A776 /* main.swift in Sources */,
+				70850E281F085F1D005E7B9A /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,7 +159,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Malice/Info.plist;
+				INFOPLIST_FILE = Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.cloudv.Malice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -175,7 +175,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Malice/Info.plist;
+				INFOPLIST_FILE = Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.cloudv.Malice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -225,6 +225,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -268,6 +269,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";

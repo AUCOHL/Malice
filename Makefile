@@ -40,6 +40,7 @@ app: unix
 	@mkdir -p Malice.app/Contents/usr/
 	@mkdir -p Malice.app/Contents/usr/bin/
 	@cp Build/Malice Malice.app/Contents/usr/bin/Malice
+	@/usr/bin/codesign --force --sign - --timestamp=none Malice.app
 clean:
 	@rm -rf Build
 	@rm -rf DerivedData

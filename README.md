@@ -24,7 +24,10 @@ Using your favorite terminal emulator:
     make
 ```
 
-Either an .app or a .AppImage file (depending on your operating system) should appear in your root folder. Please note that a GTK installation is needed on macOS is as well.
+Either an app or an AppImage file (depending on your operating system) should appear in your root folder.
+
+### macOS Notes
+Please note that a GTK installation is needed on macOS is as well. Do not open the Xcode UI as it is just part of a bigger workflow in the Makefile
 
 ## Windows
 Coming soon.

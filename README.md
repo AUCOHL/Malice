@@ -47,7 +47,7 @@ Using your favorite terminal emulator:
 Either an app or an AppImage file (depending on your operating system) should appear in your root folder.
 
 ### macOS Notes
-Please note that a GTK installation is needed on macOS is as well. Do not open the Xcode UI as it is just part of a bigger workflow in the Makefile: the binary Xcode produces is not good.
+Please note that a GTK installation is needed on macOS is as well. Do not open the Xcode UI as it is just part of a bigger workflow in the Makefile: the binary Xcode produces is only a bootstrap.
 
 ## Windows
 Coming soon.

@@ -6,6 +6,9 @@ Supports the iCE40-HX8K Breakout Board and the iCEStick Evaluation Kit, so far.
 # Dependencies
 ## Running
 GTK+ 3.0 or higher. (Planning to statically link on macOS).
+Ubuntu 14.04 or higher, macOS 10.9 or higher.
+
+(Unofficially supported, but the AppImage works on Ubuntu 12.04 too).
 
 ### First time setup on Linux
 A first time elevated-privilege command is needed so users without superuser access can upload programs to the FPGA.
@@ -17,20 +20,22 @@ A first time elevated-privilege command is needed so users without superuser acc
 This is a limitation with Linux's FTDI driver.
 
 ### First time setup on macOS
-Since OS X 10.9 Mavericks, [Apple introduced an FTDI kernel extension](https://developer.apple.com/library/content/technotes/tn2315/_index.html#//apple_ref/doc/uid/DTS40014014-CH1-TNTAG3) that makes user client driver-based apps, such as Malice, unable to obtain exclusive access to the device unless the kernel extension is unloaded or replaced with a codeless kernel extension with a higher priority.
+Short version: Download [D2XXHelper](http://www.ftdichip.com/Drivers/D2XX/MacOSX/D2xxHelper_v2.0.0.pkg) from FTDI's website, which is needed driver. Please not that your use of the driver is subject to FTDI's license terms and not ours.
 
-This is a solution but, like Linux, it requires sudo.
+Long version:
 
-```bash
-    curl -s https://raw.githubusercontent.com/Skyus/Malice/master/Resources/io.cloudv.Malice.ftdidaemon.plist | sudo tee /Library/LaunchDaemons/io.cloudv.Malice.ftdidaemon.plist > /dev/null
-```
+Since OS X 10.9 Mavericks, [Apple introduced an FTDI kernel extension](https://developer.apple.com/library/content/technotes/tn2315/_index.html#//apple_ref/doc/uid/DTS40014014-CH1-TNTAG3) that makes user client driver-based apps, such as Malice, unable to obtain exclusive access to the device unless the kernel extension is unloaded or replaced with a codeless kernel extension with a higher priority that would not block exclusive access.
+
+Luckily, FTDI themselves have provided the [codeless kernel extension](http://www.ftdichip.com/Drivers/D2XX.htm) that would override Apple's and allow Malice to work (you should find it in the row that says 'Mac OS X 10.4 Tiger or later'). The driver is under a proprietary license, but the alternative would be to unload the kext every time or delete it and Apple's driver is proprietary anyway. Please note libftdi does not link against the non-system driver and thus the GPL's integrity is preserved.
 
 Fortunately, unlike Linux, there is another solution that would help keep this as portable as possible: either rewrite iceprog for Apple IOKit or write an interface for wrapper IOKit based on libftdi. Either would be a tall order at the moment unfortunately.
 
 ## Building
 Make, GTK+ 3.0 or higher, Vala 0.36.3 or higher.
 
-### macOS
+Ubuntu 14.04 or higher, macOS 10.9 or higher.
+
+### macOS Note
 Xcode is also needed.
 
 # Usage

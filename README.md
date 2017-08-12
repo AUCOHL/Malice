@@ -5,8 +5,18 @@ Supports the iCE40-HX8K Breakout Board and the iCEStick Evaluation Kit, so far.
 
 # Dependencies
 ## Running
-GTK+ 3.0 or higher. (Planning to statically link on macOS).
 Ubuntu 14.04 or higher, macOS 10.9 or higher.
+
+GTK+ 3.0 or higher. (Planning to statically link on macOS at a later date if at all possible).
+
+```bash
+   # macOS
+   which brew
+   if [ "$?" == "1" ]; then
+       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+   fi
+   brew install gtk+3
+```
 
 (Unofficially supported, but the AppImage works on Ubuntu 12.04 too).
 
@@ -31,7 +41,7 @@ Luckily, FTDI themselves have provided the [codeless kernel extension](http://ww
 Fortunately, unlike Linux, there is another solution that would help keep this as portable as possible: either rewrite iceprog for Apple IOKit or write an interface for wrapper IOKit based on libftdi. Either would be a tall order at the moment unfortunately.
 
 ## Building
-Make, GTK+ 3.0 or higher, Vala 0.36.3 or higher.
+Make, GTK+ 3.0 or higher, Vala 0.36.3 or higher, pkg-config 0.29.2 or higher.
 
 Ubuntu 14.04 or higher, macOS 10.9 or higher.
 

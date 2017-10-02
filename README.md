@@ -1,4 +1,4 @@
-# Malice (Beta)
+# Malice
 A GUI for [iceprog](https://github.com/cliffordwolf/icestorm) for Linux-based operating systems. Core is written in C, UI is written in Vala.
 
 Supports the iCE40-HX8K Breakout Board and the iCEStick Evaluation Kit so far.

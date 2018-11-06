@@ -15,7 +15,7 @@ Malice is limited on macOS as a result of how GTK is configured, so we are no lo
 Xcode is needed as intermediate. Please do not build Malice from inside the Xcode IDE.
 
 ## First time setup
-Short version: Download [D2XXHelper](http://www.ftdichip.com/Drivers/D2XX/MacOSX/D2xxHelper_v2.0.0.pkg) from FTDI's website, which is needed driver. Please not that your use of the driver is subject to FTDI's license terms and not ours.
+Short version: Download [D2XXHelper](http://www.ftdichip.com/Drivers/D2XX/MacOSX/D2xxHelper_v2.0.0.pkg) from FTDI's website, which is a needed driver. Please not that your use of the driver is subject to FTDI's license terms and not ours.
 
 Long version:
 

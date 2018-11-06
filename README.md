@@ -32,4 +32,6 @@ The binary produced is an AppImage. Mark it as an executable (using either `chmo
 Try [this document](macOS.md).
 
 # ⚖️ License
-GNU General Public License v2 or (at your option), any later version. Check 'LICENSE'.
+Files under `Sources` and binaries of the program may be used and distributed under the GNU General Public License v3 or (at your option), any later version. Check 'LICENSE'.
+
+Files under `FTDI` and `Icestorm` can be used and distributed under the same licenses set by their original owners as outlined in their header files.
